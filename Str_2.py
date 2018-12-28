@@ -8,11 +8,11 @@ while start:
 	while s[j] == ' ':
 		j = j - 1
 	if s[i] == s[j]:
-			i = i + 1
-			j = j - 1
-			if i == len(s) or j == - (len(s)):
-				start = False
-				print('Это Палиндром')
+		i = i + 1
+		j = j - 1
+		start = i < len(s)
 	else:
-		print('Это не Палиндром')
 		start = False
+		print('Это не Палиндром')
+if i == len(s):
+	print('Это Палиндром')
