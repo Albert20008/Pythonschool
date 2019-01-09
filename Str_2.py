@@ -1,8 +1,7 @@
 s = input('Введите что-нибудь: ')
 i = 0
 j = - 1
-start = True
-while start:
+while i < len(s) // 2:
 	while s[i] == ' ':
 		i = i + 1
 	while s[j] == ' ':
@@ -10,9 +9,9 @@ while start:
 	if s[i] == s[j]:
 		i = i + 1
 		j = j - 1
-		start = i < len(s)
 	else:
-		start = False
-		print('Это не Палиндром')
-if i == len(s):
+		break
+if i >= len(s) // 2:
 	print('Это Палиндром')
+else:
+	print('Это не Палиндром')
