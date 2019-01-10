@@ -1,6 +1,7 @@
 s = input('Введите что-нибудь: ')
 i = 0
 j = - 1
+Palingrom = True
 for g in range(-1, len(s), 2):
 	while s[i] == ' ':
 		i = i + 1
@@ -10,11 +11,9 @@ for g in range(-1, len(s), 2):
 		i = i + 1
 		j = j - 1
 	else:
+		Palingrom = False
 		break
-print(s[len(s) // 2])
-if i >= len(s) // 2 + 1:
+if Palingrom:
 	print('Это Палиндром')
 else:
 	print('Это не Палиндром')
-	if s[len(s) // 2] != ' ':
-		print('Это читерный Палиндром')
