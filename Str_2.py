@@ -16,7 +16,6 @@ while i <= l // 2:
 		i = i + 1
 		j = j - 1
 	else:
-		#Palingrom = False
 		break
 
 if i > l // 2:
