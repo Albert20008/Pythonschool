@@ -47,100 +47,36 @@ for i in range(len(chart)):
 
 print('Победитель команда {}'. format(final_command + 1))
 
-#ЭТО ОДИН КОД!!!!
+final_list = []
 
-# while not check:
+for i in range(len(chart)):
 
-#  	check = True
+	final = 0
 
-#  	for i in range(len(chart) - 1, -1, -1):
+	final_list.append([])
 
-#  		final_1 = 0
+	for g in range(len(chart[i])):
 
-#  		for g in range(len(chart[i])):
+		final += chart[i][g]
 
-#  			final += chart[i][g]
+	final_list[i].append(str(i + 1))
+	final_list[i].append(final)
 
-#  		for g in range(i - 1, -1, -1):
-
-#  			for j in range(len(chart[g])):
-
-#  				final_1 += chart[g][j]
-
-#  			if final > final_1:
-
-#  				d = chart[g]
-#  				chart[g] = chart[i]
-#  				chart[i] = d
-#  				check = False
-
-#А ВОТ ЭТО ДРУГОЙ КОД!!!!
-
-# for i in range(len(chart)):
-
-# 	final = 0
-# 	final_command = -1
-
-# 	for g in range(len(chart[i])):
-
-# 		final += chart[i][g]
-
-# 	for g in range(i + 1, len(chart)):
-
-# 		final_1 = 0
-
-# 		for j in range(len(chart[g])):
-
-# 			final_1 += chart[g][j]
-
-# 		if final_1 > final:
-
-# 			final = final_1
-# 			final_command = command_list[g]
-
-# 	if final_command != -1:
-
-# 		d = chart[i]
-# 		b = command_list[i]
-
-# 		chart[i] = chart[final_command]
-# 		command_list[i] = final_command
-
-# 		chart[final_command] = d
-# 		command_list[final_command] = b
-
-# 	print('{} место занимает команда {}'. format(i + 1, command_list[i] + 1))
-
-#А ВОТ ЭТО ДВА КОДА ВМЕСТЕ!!!)
 check = False
 
 while not check:
 
 	check = True
 
-	for i in range(len(chart) - 1):
+	for i in range(len(final_list) - 1):
 
-		final_1 = 0
-		final = 0
+		if final_list[i][1] < final_list[i + 1][1]:
 
-		for g in range(len(chart[i])):
-
-			final += chart[i][g]
-
-		for g in range(len(chart[i + 1])):
-
-			final_1 += chart[i + 1][g]
-
-		if final_1 > final:
-
-			b = command_list[i] 
-			d = chart[i]
-			command_list[i] = command_list[i + 1]
-			command_list[i + 1] = b
-			chart[i] = chart[i + 1]
-			chart[i + 1] = d
+			b = final_list[i + 1]
+			final_list[i + 1] = final_list[i]
+			final_list[i] = b
 			check = False
 
-for i in range(len(command_list)):
+for i in range(len(final_list)):
 
-	print('{} место занимает команда {}'. format(i + 1, command_list[i] + 1))
+	print('{} место занимает команда {}'. format(i + 1, final_list[i][0]))
