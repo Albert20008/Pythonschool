@@ -1,10 +1,8 @@
-fail = open('файл №1', 'r')
+with open('файл №1', 'r') as fail:
 
-a = fail.read()
+	a = fail.read()
+	a = a.split('\n')
 
-a = a.split('\n')
-
-fail.close()
 
 fail = open('файл №1', 'w')
 

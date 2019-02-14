@@ -35,6 +35,10 @@ def cheak_pole(player: str) -> bool:
 
 	return 0
 
+player_x = input('Игрок(x), ведите ваше имя: ')
+
+player_o = input('Игрок(o), ведите ваше имя: ')
+
 fieid_width = 3
 
 cells = []
@@ -91,10 +95,64 @@ for i in range(fieid_width * fieid_width):
 	cheak = cheak_pole(player)
 	if cheak == True:
 
-		print('Игрок "{}" победил!!!'. format(player))
+		if player == 'X':
+
+			print('Игрок "{}" победил!!!'. format(player_x))
+			player = player_x
+
+		elif player == 'O':
+
+			print('Игрок "{}" победил!!!'. format(player_o))
+			player = player_o
 
 		break
 
 if cheak == False:
 
 	print('Ничья')
+
+print()
+
+#Таблица игроков
+players = {}
+
+try:
+
+	file = open('Таблица игроков.txt', 'r')
+
+except FileNotFoundError as e:
+
+	file = open('Таблица игроков.txt', 'w')
+
+	file.close()
+
+else:
+
+	players_file = file.read()
+
+	file.close()
+
+	players_file = players_file.split('\n')
+
+	for i in range(len(players_file) - 1):
+
+		g = players_file[i].split(' ')
+
+		players[g[0]] = g[1]
+#Тут словарь собрался
+
+players.setdefault(player, 0)
+
+players[player] = int(players[player]) + 1
+
+with open('Таблица игроков.txt', 'w') as file:
+
+	for i in players:
+
+		file.write('{} {}\n'. format(i, players[i]))
+
+	file.write('End')
+
+for i in players:
+
+	print('{} {}'. format(i, players[i]))
