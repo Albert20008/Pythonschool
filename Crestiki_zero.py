@@ -151,8 +151,6 @@ with open('Таблица игроков.txt', 'w') as file:
 
 		file.write('{} {}\n'. format(i, players[i]))
 
-	file.write('End')
-
 for i in players:
 
 	print('{} {}'. format(i, players[i]))
