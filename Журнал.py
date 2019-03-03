@@ -1,3 +1,5 @@
+import struct
+
 def menu_print() -> int:
 
 	print('''
@@ -47,6 +49,8 @@ def journal_student_edit(student: int):
 
 	while not check:
 
+		journal_print(student)
+
 		print('''
 1 Изменить фамилию
 2 Изменить имя
@@ -90,6 +94,10 @@ def journal_student_edit(student: int):
 				if command not in journal[student]['Оценки']:
 
 					command_1 = int(input('Введите оценку: '))
+					while command_1 <= 0:
+
+						print('Ошибка\nВведите число, которое больше 0')
+						command_1 = int(input('Введите оценку: '))
 
 					journal[student]['Оценки'][command] = command_1
 
@@ -108,6 +116,10 @@ def journal_student_edit(student: int):
 				if command in journal[student]['Оценки']:
 
 					command_1 = int(input('Введите оценку: '))
+					while command_1 <= 0:
+
+						print('Ошибка\nВведите число, которое больше 0')
+						command_1 = int(input('Введите оценку: '))
 
 					journal[student]['Оценки'][command] = command_1
 
@@ -151,8 +163,6 @@ def journal_student_edit(student: int):
 		else:
 
 			print('Команда неверна')
-
-	
 
 def add_student():
 
@@ -206,15 +216,71 @@ def journal_Underperforming():
 
 			journal_str_print(i)
 
-journal = [
-{'Фамилия': 'Пупкин',
-'Имя': 'Вася',
-'Отчество': 'Фёдорович',
-'Группа': 'АР-124',
-'Оценки': {
-'Математика': 4,
-'Русский язык': 5}
-}]
+def end():
+
+	file = open('Журнал', 'wb')
+
+	file.write(struct.pack('h', len(journal)))
+
+	for i in range(len(journal)):
+
+		for j in journal[i]:
+
+			if j == 'Оценки':
+
+				file.write(struct.pack('h', len(journal[i]['Оценки'])))
+
+				for g in journal[i][j]:
+
+					file.write(struct.pack('h{}sh'. format(len(g)), len(g), g.encode("windows-1251"), journal[i][j][g]))
+
+			else:
+
+				file.write(struct.pack('h{}s'. format(len(journal[i][j])), len(journal[i][j]), journal[i][j].encode("windows-1251")))
+
+	file.close()
+
+
+journal = []
+
+try:
+
+	file = open('Журнал', 'rb')
+
+except FileNotFoundError as e:
+
+	pass
+
+else:
+
+	data = struct.unpack('h', file.read(2))
+ 
+	for i in range(data[0]):
+
+		journal.append({})
+
+		data = struct.unpack('h', file.read(2))
+		journal[i]['Фамилия'] = struct.unpack('{}s'. format(data[0]), file.read(data[0]))[0].decode("windows-1251")
+
+		data = struct.unpack('h', file.read(2))
+		journal[i]['Имя'] = struct.unpack('{}s'. format(data[0]), file.read(data[0]))[0].decode("windows-1251")
+
+		data = struct.unpack('h', file.read(2))
+		journal[i]['Отчество'] = struct.unpack('{}s'. format(data[0]), file.read(data[0]))[0].decode("windows-1251")
+
+		data = struct.unpack('h', file.read(2))
+		journal[i]['Группа'] = struct.unpack('{}s'. format(data[0]), file.read(data[0]))[0].decode("windows-1251")
+
+		data = struct.unpack('h', file.read(2))
+		journal[i]['Оценки'] = {}
+	 	
+		for j in range(data[0]):
+
+			data = struct.unpack('h', file.read(2))
+			schoolwork = struct.unpack('{}s'. format(data[0]), file.read(data[0]))[0].decode("windows-1251")
+			journal[i]['Оценки'][schoolwork] = struct.unpack('h', file.read(2))[0]
+
+	file.close()
 
 command_menu = 0
 
@@ -310,8 +376,19 @@ while command_menu != 7:
 
 	elif command_menu == 7:
 
-		pass
+		end()
 
 	else:
 
 		print('Команда неверна')
+
+
+# journal = [
+# {'Фамилия': 'Пупкин',
+# 'Имя': 'Вася',
+# 'Отчество': 'Фёдорович',
+# 'Группа': 'АР-124',
+# 'Оценки': {
+# 'Математика': 4,
+# 'Русский язык': 5}
+# }]
