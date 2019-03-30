@@ -164,6 +164,8 @@ def journal_student_edit(student: int):
 
 			print('Команда неверна')
 
+		end()
+
 def add_student():
 
 	journal.append({})
@@ -207,7 +209,7 @@ def journal_Underperforming():
 
 		for g in journal[i]['Оценки'].values():
 
-			if g == 2:
+			if g <= 2:
 
 				cheak = False
 				break
@@ -232,11 +234,15 @@ def end():
 
 				for g in journal[i][j]:
 
-					file.write(struct.pack('h{}sh'. format(len(g)), len(g), g.encode("windows-1251"), journal[i][j][g]))
+					schoolwork = g.encode("utf-8")
+
+					file.write(struct.pack('h{}sh'. format(len(schoolwork)), len(schoolwork), schoolwork, journal[i][j][g]))
 
 			else:
 
-				file.write(struct.pack('h{}s'. format(len(journal[i][j])), len(journal[i][j]), journal[i][j].encode("windows-1251")))
+				schoolwork = journal[i][j].encode('utf-8')
+
+				file.write(struct.pack('h{}s'. format(len(schoolwork)), len(schoolwork), schoolwork))
 
 	file.close()
 
@@ -260,16 +266,16 @@ else:
 		journal.append({})
 
 		data = struct.unpack('h', file.read(2))
-		journal[i]['Фамилия'] = struct.unpack('{}s'. format(data[0]), file.read(data[0]))[0].decode("windows-1251")
+		journal[i]['Фамилия'] = struct.unpack('{}s'. format(data[0]), file.read(data[0]))[0].decode("utf-8")
 
 		data = struct.unpack('h', file.read(2))
-		journal[i]['Имя'] = struct.unpack('{}s'. format(data[0]), file.read(data[0]))[0].decode("windows-1251")
+		journal[i]['Имя'] = struct.unpack('{}s'. format(data[0]), file.read(data[0]))[0].decode("utf-8")
 
 		data = struct.unpack('h', file.read(2))
-		journal[i]['Отчество'] = struct.unpack('{}s'. format(data[0]), file.read(data[0]))[0].decode("windows-1251")
+		journal[i]['Отчество'] = struct.unpack('{}s'. format(data[0]), file.read(data[0]))[0].decode("utf-8")
 
 		data = struct.unpack('h', file.read(2))
-		journal[i]['Группа'] = struct.unpack('{}s'. format(data[0]), file.read(data[0]))[0].decode("windows-1251")
+		journal[i]['Группа'] = struct.unpack('{}s'. format(data[0]), file.read(data[0]))[0].decode("utf-8")
 
 		data = struct.unpack('h', file.read(2))
 		journal[i]['Оценки'] = {}
@@ -277,7 +283,7 @@ else:
 		for j in range(data[0]):
 
 			data = struct.unpack('h', file.read(2))
-			schoolwork = struct.unpack('{}s'. format(data[0]), file.read(data[0]))[0].decode("windows-1251")
+			schoolwork = struct.unpack('{}s'. format(data[0]), file.read(data[0]))[0].decode("utf-8")
 			journal[i]['Оценки'][schoolwork] = struct.unpack('h', file.read(2))[0]
 
 	file.close()
@@ -303,6 +309,7 @@ while command_menu != 7:
 	elif command_menu == 2:
 
 		add_student()
+		end()
 
 	elif command_menu == 3:
 
@@ -320,6 +327,7 @@ while command_menu != 7:
 		else:
 
 			print('Студента с таким номером нет!')
+
 
 	elif command_menu == 4:
 
@@ -353,6 +361,8 @@ while command_menu != 7:
 			else:
 
 				print('Введите да или нет!')
+
+		end()
 
 	elif command_menu == 5:
 
